@@ -1012,6 +1012,15 @@ class AuthenticatedClient(PublicClient):
     def get_deposits(self, profile_id=None, after=None, before=None):
         """ Get a list of your deposits.
 
+        Args:
+            profile_id (str): Limit list of deposits to this profile_id.
+                              Retrieves deposits across all of the user's
+                              profiles by default
+            before (str): If set, returns deposits created after the before
+                          timestamp, sorted by oldest creation date
+            after (str): If set, returns deposits created before the after
+                         timestamp, sorted by oldest creation date
+
         Returns:
             list:  Deposits from the profile of the API key::
                 [
