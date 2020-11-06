@@ -558,7 +558,7 @@ class AuthenticatedClient(PublicClient):
                         "product_id": "BTC-USD",
                         "side": "buy",
                         "stp": "dc",
-                        "type": "limit",
+                        "type": "limit,
                         "time_in_force": "GTC",
                         "post_only": false,
                         "created_at": "2016-12-08T20:02:28.53864Z",
@@ -1008,3 +1008,43 @@ class AuthenticatedClient(PublicClient):
                 }
         """
         return self._send_message('get', '/fees')
+
+    def get_deposits(self, profile_id=None, after=None, before=None):
+        """ Get a list of your deposits.
+
+        Returns:
+            list:  Deposits from the profile of the API key::
+                [
+                    {
+                        "id": "6cca6a14-a5e3-4219-9542-86123fc9d6c3",
+                        "type": "deposit",
+                        "created_at": "2019-06-18 01:37:48.78953+00",
+                        "completed_at": "2019-06-18 01:37:49.756147+00",
+                        "canceled_at": null,
+                        "processed_at": "2019-06-18 01:37:49.756147+00",
+                        "account_id": "bf091906-ca7f-499e-95fa-5bc15e918b46",
+                        "user_id": "5eeac63c90b913bf3cf7c92e",
+                        "user_nonce": null,
+                        "amount": "40.00000000",
+                        "details": {
+                            "crypto_address": "rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg",
+                            "destination_tag": "379156162",
+                            "coinbase_account_id": "7f8803e2-1be5-4a29-bfd2-3bc6645f5a24",
+                            "destination_tag_name": "XRP Tag",
+                        "crypto_transaction_id": "5eeac64cc46b34f5332e5326",
+                        "coinbase_transaction_id": "5eeac652be6cf8b17f7625bd",
+                        "crypto_transaction_hash": "B918BF044B6ADA318B36F4F23E7EB141C15BF2B6CFB96FDFC674E907FE235FB1"
+                        }
+                    },
+                    ...
+                ]
+        """
+
+        params = {
+            'type': 'deposit',
+            'profile_id': profile_id,
+            'before': before,
+            'after': after
+        }
+        endpoint = '/transfers'
+        return self._send_paginated_message(endpoint, params=params)
